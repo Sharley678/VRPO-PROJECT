@@ -1,0 +1,94 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian"); // Устанавливаем русский язык
+    srand(time(0)); // Генератор случайных чисел
+
+    int menuChoice; // Выбор в главном меню
+    int playerAction; // Действие игрока в раунде
+    int playerTotal = 0; // Общий счёт игрока
+    int botTotal = 0;    // Общий счёт бота
+    int playerCard;      // Очки карты игрока
+    int botCard;         // Очки карты бота
+    int firstBotCard;    // Первая карта бота
+    bool isFirstBotCardShown = false; // Флаг для отображения первой карты бота
+    int numRounds = 0;   // Количество раундов
+
+    cout << "Добро пожаловать в игру!\n";
+    cout << "1. Начать новую игру\n";
+    cout << "2. Выйти\n";
+    cin >> menuChoice;
+
+    if (menuChoice == 1) {
+        cout << "Игра началась, раздаём карты...\n";
+
+        while (playerTotal < 21) { // Игрок берёт карты, пока у него не перебор
+            playerCard = rand() % 8 + 2; // Карты от 2 до 9
+            botCard = rand() % 8 + 2;    // Карты от 2 до 9
+
+            playerTotal += playerCard;
+
+            // Если это первая карта бота, сохраняем её и отображаем
+            if (!isFirstBotCardShown) {
+                firstBotCard = botCard;
+                botTotal += botCard;
+                cout << "Первой картой бота была: " << firstBotCard << endl;
+                isFirstBotCardShown = true; // Флаг, чтобы больше не показывать карты бота
+            }
+
+            cout << "Вам выпала карта: " << playerCard << ", Ваша текущая сумма: " << playerTotal << endl;
+
+            if (playerTotal >= 21) { // Если у игрока перебор, не запрашиваем дальнейшие действия
+                break;
+            }
+
+            cout << "Выберите действие:\n";
+            cout << "1. Взять ещё карту\n";
+            cout << "2. Остановиться\n";
+            cin >> playerAction;
+
+            if (playerAction == 2) {
+                cout << "Вы остановились с суммой: " << playerTotal << endl;
+                break; // Игрок закончил брать карты
+            }
+
+            numRounds++;
+        }
+
+        // Бот берёт карты, пока его сумма меньше 14
+        while (botTotal < 14 || (botTotal < playerTotal && botTotal <= 21)) {
+            botCard = rand() % 8 + 2; // Бот берёт ещё карту
+            botTotal += botCard;
+            cout << "Бот взял карту: " << botCard << ", сумма бота: " << botTotal << endl;
+        }
+
+        cout << "Игра окончена!\n";
+        cout << "Ваша сумма: " << playerTotal << ", сумма бота: " << botTotal << endl;
+
+        // Определяем победителя
+        if (playerTotal > 21) {
+            cout << "Вы проиграли! У вас перебор.\n";
+        }
+        else if (botTotal > 21 || playerTotal > botTotal) {
+            cout << "Поздравляем, вы выиграли!\n";
+        }
+        else if (playerTotal == botTotal) {
+            cout << "Ничья! Хорошая игра.\n";
+        }
+        else {
+            cout << "К сожалению, вы проиграли. У бота больше очков.\n";
+        }
+    }
+    else if (menuChoice == 2) {
+        cout << "Вы вышли из игры. До свидания!\n";
+    }
+    else {
+        cout << "Ошибка ввода. Пожалуйста, перезапустите игру и попробуйте снова.\n";
+    }
+
+    system("pause"); // Пауза перед завершением программы
+    return 0;
+}
