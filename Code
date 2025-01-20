@@ -4,8 +4,8 @@
 using namespace std;
 
 int main() {
-    setlocale(LC_ALL, "Russian"); // Устанавливаем русский язык
-    srand(time(0)); // Генератор случайных чисел
+    setlocale(LC_ALL, "Russian");
+    srand(time(0));
 
     int menuChoice; // Выбор в главном меню
     int playerAction; // Действие игрока в раунде
@@ -41,7 +41,7 @@ int main() {
 
             cout << "Вам выпала карта: " << playerCard << ", Ваша текущая сумма: " << playerTotal << endl;
 
-            if (playerTotal >= 21) { // Если у игрока перебор, не запрашиваем дальнейшие действия
+            if (playerTotal >= 21) { // Если у игрока перебор, не запрашивает дальнейшие действия
                 break;
             }
 
@@ -59,7 +59,7 @@ int main() {
         }
 
         // Бот берёт карты, пока его сумма меньше 14
-        while (botTotal < 14 || (botTotal < playerTotal && botTotal <= 21)) {
+        while (botTotal < 14 || (botTotal < playerTotal && botTotal <= 21 && playerTotal < 21)) {
             botCard = rand() % 8 + 2; // Бот берёт ещё карту
             botTotal += botCard;
             cout << "Бот взял карту: " << botCard << ", сумма бота: " << botTotal << endl;
